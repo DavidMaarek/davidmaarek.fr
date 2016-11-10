@@ -68,6 +68,14 @@ h2.sous_titre_principal{
     font-size: 20px;
 }
 
+.github{
+    text-align: center;
+    margin-top:30px;
+}
+.github a{
+    color: #fff;
+}
+
 h3{
     margin-top: 30px;
 }
