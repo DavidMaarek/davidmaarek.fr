@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2.1.0
         with:
-          name: build
+          name: my-artifact
       - name: "Prepare SSH key and known hosts"
         # https://github.com/symfony/cli/issues/227#issuecomment-601680974
         run: |
