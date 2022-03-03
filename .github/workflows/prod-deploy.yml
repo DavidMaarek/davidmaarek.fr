@@ -10,3 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pwd && ls -la
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: |
+            css/
+            fonts/
+            img/
+            library/
+            index.html
