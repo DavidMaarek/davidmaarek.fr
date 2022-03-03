@@ -13,12 +13,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: |
-            css/
-            fonts/
-            img/
-            library/
-            index.html
+          path: index.html
   deploy:
     runs-on: ubuntu-latest
     needs: copy-files
