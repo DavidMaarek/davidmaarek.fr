@@ -32,4 +32,4 @@ jobs:
           ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: Run deploy script
         run: |
-          rsync -rSlh --stats --delete --exclude '.htpasswd' . ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
+          rsync -rSlhv --stats --delete --exclude '.htpasswd' . ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
