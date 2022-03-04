@@ -8,6 +8,8 @@ jobs:
   copy-files:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - run: pwd && ls -la
       - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
