@@ -1,3 +1,5 @@
+@import "reset.css";
+
 @font-face {
     font-family: 'menloregular';
     src: url('../fonts/menlo-regular-webfont.eot');
@@ -8,11 +10,10 @@
     url('../fonts/menlo-regular-webfont.svg#menloregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
-body{
-	background-color: #272822;
+body {
+	background-color: #1e1f22;
     font-family: "menloregular", sans-serif;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -20,31 +21,48 @@ body{
     line-height: 20px;
 }
 
-.ml30{
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* Compétences */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    padding: 0 15px;
+
+    @media (max-width: 740px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.ml30 {
     margin-left: 30px;
 }
 
-.lh20{
+.lh20 {
     line-height: 20px;
 }
 
-.white{
+.white {
 	color: #fff;
 }
 
-.green{
+.green {
     color: #a4c34c;
 }
 
-.pink{
+.pink {
     color: #e63273;
 }
 
-.blue{
+.blue {
     color: #74c6e1;
 }
 
-.yellow{
+.yellow {
     color: #e6d97a;
 }
 
@@ -60,7 +78,7 @@ h1.titre_principal{
     font-size: 40px;
 }
 
-h2.sous_titre_principal{
+h2.sous_titre_principal {
     margin-top: 20px;
 
 	text-align: center;
@@ -68,28 +86,39 @@ h2.sous_titre_principal{
     font-size: 20px;
 }
 
-.github{
+.github {
     text-align: center;
     margin-top:30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
-.github a{
+.github a {
     color: #fff;
 }
 
-h3{
+.github a img {
+    width: 24px;
+}
+
+h3 {
     margin-top: 30px;
 }
 
-h3{
-	text-align: center;
-	color: #74705f;
+h3 {
+	color: #7a7e85;
 }
 
-article{
+h3 + article {
+    margin-top: 0;
+}
+
+article {
     margin-top: 20px;
 }
 
-#contact{
+#contact {
     text-align: center;
     margin-top: 50px;
 }
