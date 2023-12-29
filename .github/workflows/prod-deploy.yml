@@ -1,0 +1,24 @@
+name: Preprod - Deploy
+
+on:
+  workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: "Prepare SSH key and known hosts"
+        # https://github.com/symfony/cli/issues/227#issuecomment-601680974
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy files to VPS
+        run: |
+          rsync -r --include='index.html' --include='css/**' --include='fonts/**' --include='img/**' --exclude='*' ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PRODWEBPATH }}
