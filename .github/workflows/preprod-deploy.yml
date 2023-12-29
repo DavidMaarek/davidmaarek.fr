@@ -21,4 +21,4 @@ jobs:
 
       - name: Copy files to VPS
         run: |
-          rsync -r --include='index.html' --include='css/**' --include='fonts/**' --include='img/**' --exclude='*' ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
+          rsync --verbose --stats --delete -r --include='index.html' --include='css/**' --include='fonts/**' --include='img/**' --exclude='*' ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
