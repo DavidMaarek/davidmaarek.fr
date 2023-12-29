@@ -53,6 +53,11 @@ body {
 
   @media (max-width: 740px) {
     grid-template-columns: repeat(1, 1fr);
+    gap: 0;
+
+    > div:nth-child(2) {
+      order: -1;
+    }
   }
 }
 
