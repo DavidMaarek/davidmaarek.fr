@@ -1,0 +1,21 @@
+name: Preprod - Deploy
+
+on:
+  workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.KEY }}
+
+      - name: Copy files to VPS
+        run: |
+          rsync -r --include='index.html' --include='css/**' --include='fonts/**' --include='img/**' --exclude='*' ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
