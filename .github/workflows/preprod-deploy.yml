@@ -22,4 +22,4 @@ jobs:
       - name: Copy files to VPS
         run: |
           ls -la |
-          rsync --verbose --stats --delete --update --dirs -rSlh . ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
+          rsync --verbose -rSlh --stats --delete --exclude '.git/' --exclude '.github/' --exclude '.gitignore' --exclude 'README.md' . ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PREPRODWEBPATH }}
