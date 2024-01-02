@@ -18,6 +18,7 @@
   --color-text: #bcbec4;
   --color-scss-comment: #bb9455;
   --color-css-comment: #7a7e85;
+  --color-svg-icons: #fff;
 }
 
 [data-color="string"] { color: var(--color-string) }
@@ -38,6 +39,20 @@ body {
   font-size: 14px;
   line-height: 20px;
   color: var(--color-text);
+}
+
+body[data-theme="light"] {
+  --color-background: #ffffff;
+  --color-string: #067D18;
+  --color-property-binding: #871094;
+  --color-tag: #0133B3;
+  --color-function: #0133B3;
+  --color-statement: #9E880D;
+  --color-declaration: #b3ae60;
+  --color-text: #080808;
+  --color-scss-comment: #bb9455;
+  --color-css-comment: #8C8C8C;
+  --color-svg-icons: var(--color-text);
 }
 
 .container {
@@ -124,8 +139,9 @@ h2 {
   color: #fff;
 }
 
-.links a img {
+.links a svg {
   width: 24px;
+  fill: var(--color-svg-icons);
 }
 
 h3 {
