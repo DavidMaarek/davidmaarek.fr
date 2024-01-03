@@ -43,11 +43,11 @@ body {
 
 body[data-theme="light"] {
   --color-background: #ffffff;
-  --color-string: #067D18;
-  --color-property-binding: #871094;
-  --color-tag: #0133B3;
-  --color-function: #0133B3;
-  --color-statement: #9E880D;
+  --color-string: #04B11E;
+  --color-property-binding: #A319B2;
+  --color-tag: #3261DA;
+  --color-function: #3261DA;
+  --color-statement: #EF8048;
   --color-declaration: #b3ae60;
   --color-text: #080808;
   --color-scss-comment: #bb9455;
