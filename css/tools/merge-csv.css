@@ -1,0 +1,120 @@
+@import "../reset.css";
+
+@font-face {
+  font-family: 'Open-Sans';
+  src: url('../../fonts/open-sans/open-sans.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+button {
+  cursor: pointer;
+}
+
+body {
+  font-family: 'Open-Sans', sans-serif;
+  background-color: #34a853;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+.form {
+  background-color: #fff;
+  border-radius: 50px;
+  flex: 1;
+  margin: auto 15px;
+  max-width: 400px;
+  padding: 30px;
+  text-align: center;
+}
+
+.drag-file-area {
+  border: 2px dashed #34a853;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.form svg {
+  height: 40px;
+}
+
+.form p {
+  font-size: 25px;
+  margin: 15px 0;
+}
+
+.form label {
+  font-size: 20px;
+}
+
+.form label span {
+  color: #34a853;
+}
+
+.form input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.form button,
+.form a {
+  border: none;
+  border-radius: 20px;
+  background-color: #34a853;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 15px;
+  text-decoration: none;
+  margin: auto;
+}
+
+.form button:disabled {
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+.form a {
+  display: none;
+}
+
+.form a svg {
+  height: 18px;
+  fill: #fff;
+}
+
+.reload-page {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: none;
+  height: 45px;
+  width: 45px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reload-page svg {
+  height: 20px;
+}
+
+.reload-page svg path {
+  fill: #34a853;
+}
