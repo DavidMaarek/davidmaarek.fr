@@ -14,7 +14,7 @@
     </svg>
     <p>Drag & drop CSV files here</p>
     <label for="fileInput">or <span>browse files</span> from device</label>
-    <input type="file" id="fileInput" multiple>
+    <input type="file" id="fileInput" accept=".csv" multiple>
   </div>
   <button onclick="mergeCSV()" id="mergeButton" disabled>Merge <span id="fileCount"></span> CSV files</button>
   <a id="downloadLink">
