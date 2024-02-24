@@ -55,7 +55,7 @@
     const csvFiles = [];
     const xlsxFiles = [];
 
-    // Séparer les fichiers CSV, XLS et XLSX
+    // Séparez les fichiers CSV, XLS et XLSX
     for (let i = 0; i < files.length; i++) {
       const extension = files[i].name.split('.').pop().toLowerCase();
       if (extension === 'csv') {
@@ -81,12 +81,10 @@
           const csvData = e.target.result;
           const lines = csvData.split('\n');
 
-          // Vérifier si la première ligne est identique à celle du premier fichier
-          const isFirstLineSameAsFirstFile = index > 0 && lines[0].trim() === firstFileFirstLine.trim();
-
-          // Exclure la première ligne si elle est identique à celle du premier fichier
-          if (isFirstLineSameAsFirstFile) {
-            lines.shift(); // Supprimer la première ligne (en-tête)
+          // Exclure l'en-tête si nécessaire
+          // TODO: si il n'y a pas de ligne d'entete, et que c'est direct des "vraies" lignes, ca va supprimer du contenu
+          if (index > 0) {
+            lines.shift(); // Supprime la première ligne (en-tête)
           }
 
           lines.forEach(line => {
@@ -97,7 +95,7 @@
         };
         reader.readAsText(csvFiles[index]);
       } else {
-        // Fusionner les fichiers XLSX
+        // Fusionnez les fichiers XLSX
         mergeXLSXFiles(0);
       }
     }
@@ -113,9 +111,9 @@
           const csv = XLSX.utils.sheet_to_csv(sheet);
           const lines = csv.split('\n');
 
-          // Exclure la première ligne si elle est identique à celle du premier fichier CSV
-          if (index > 0 && csvFiles.length > 0 && lines[0].trim() === firstFileFirstLine.trim()) {
-            lines.shift(); // Supprimer la première ligne (en-tête)
+          // Exclure l'en-tête si nécessaire
+          if (index > 0 || csvFiles.length > 0) {
+            lines.shift(); // Supprime la première ligne (en-tête)
           }
 
           lines.forEach(line => {
@@ -126,29 +124,19 @@
         };
         reader.readAsArrayBuffer(xlsxFiles[index]);
       } else {
-        // Tous les fichiers ont été lus, fusionner les données
+        // Tous les fichiers ont été lus, fusionnez les données
         const mergedCSV = mergedData.join('\n');
         const blob = new Blob([mergedCSV], { type: 'text/csv' });
         const url = URL.createObjectURL(blob);
 
         document.getElementById('mergeButton').style.display = 'none';
 
-        // Afficher le lien de téléchargement
+        // Affiche le lien de téléchargement
         downloadLink.href = url;
         downloadLink.download = 'merged_file.csv';
         downloadLink.style.display = 'inline-block';
       }
     }
-
-    // Lire et stocker la première ligne du premier fichier CSV
-    let firstFileFirstLine = "";
-    const firstFileReader = new FileReader();
-    firstFileReader.onload = function (e) {
-      const csvData = e.target.result;
-      const lines = csvData.split('\n');
-      firstFileFirstLine = lines[0];
-    };
-    firstFileReader.readAsText(csvFiles[0]);
 
     mergeCSVFiles(0);
   }
