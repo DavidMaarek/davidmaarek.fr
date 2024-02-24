@@ -31,6 +31,7 @@
   </svg>
 </button>
 
+<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 <script type="application/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('fileInput').addEventListener('change', function () {
@@ -51,40 +52,76 @@
 
     const files = fileInput.files;
 
-    if (files.length < 2) {
+    const csvFiles = [];
+    const xlsxFiles = [];
+
+    // Séparez les fichiers CSV, XLS et XLSX
+    for (let i = 0; i < files.length; i++) {
+      const extension = files[i].name.split('.').pop().toLowerCase();
+      if (extension === 'csv') {
+        csvFiles.push(files[i]);
+      } else if (extension === 'xls') {
+        xlsxFiles.push(files[i]);
+      } else if (extension === 'xlsx') {
+        xlsxFiles.push(files[i]);
+      }
+    }
+
+    if (csvFiles.length < 2 && xlsxFiles.length === 0) {
       alert("Sélectionnez au moins deux fichiers CSV.");
       return;
     }
 
     const mergedData = [];
 
-    // Fonction pour lire chaque fichier CSV
-    function readCSV(file, callback, excludeHeader) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const csvData = e.target.result;
-        const lines = csvData.split('\n');
+    function mergeCSVFiles(index) {
+      if (index < csvFiles.length) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const csvData = e.target.result;
+          const lines = csvData.split('\n');
 
-        // Exclure l'en-tête si nécessaire
-        if (excludeHeader && mergedData.length > 0) {
-          lines.shift(); // Supprime la première ligne (en-tête)
-        }
+          // Exclure l'en-tête si nécessaire
+          if (index > 0) {
+            lines.shift(); // Supprime la première ligne (en-tête)
+          }
 
-        lines.forEach(line => {
-          mergedData.push(line);
-        });
-        callback();
-      };
-      reader.readAsText(file);
+          lines.forEach(line => {
+            mergedData.push(line);
+          });
+
+          mergeCSVFiles(index + 1);
+        };
+        reader.readAsText(csvFiles[index]);
+      } else {
+        // Fusionnez les fichiers XLSX
+        mergeXLSXFiles(0);
+      }
     }
 
-    // Fonction récursive pour lire tous les fichiers CSV
-    function readNextFile(index) {
-      if (index < files.length) {
-        const excludeHeader = index > 0;
-        readCSV(files[index], function () {
-          readNextFile(index + 1);
-        }, excludeHeader);
+    function mergeXLSXFiles(index) {
+      if (index < xlsxFiles.length) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const csv = XLSX.utils.sheet_to_csv(sheet);
+          const lines = csv.split('\n');
+
+          // Exclure l'en-tête si nécessaire
+          if (index > 0 || csvFiles.length > 0) {
+            lines.shift(); // Supprime la première ligne (en-tête)
+          }
+
+          lines.forEach(line => {
+            mergedData.push(line);
+          });
+
+          mergeXLSXFiles(index + 1);
+        };
+        reader.readAsArrayBuffer(xlsxFiles[index]);
       } else {
         // Tous les fichiers ont été lus, fusionnez les données
         const mergedCSV = mergedData.join('\n');
@@ -100,9 +137,9 @@
       }
     }
 
-    // Commencez la lecture des fichiers
-    readNextFile(0);
+    mergeCSVFiles(0);
   }
+
 </script>
 </body>
 </html>
