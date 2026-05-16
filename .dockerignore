@@ -1,0 +1,13 @@
+# Fichiers et dossiers à exclure du COPY dans l'image Docker.
+# Ces fichiers existent dans le repo mais n'ont rien à faire dans le conteneur
+# qui sert le site.
+
+.git
+.gitignore
+.github
+.idea
+.DS_Store
+README.md
+Dockerfile
+.dockerignore
+nginx.conf

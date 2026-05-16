@@ -1,0 +1,50 @@
+name: Deploy to Prod
+
+# Déclenchement manuel uniquement depuis l'UI GitHub Actions.
+#
+# Cas d'usage :
+#   - Promouvoir en prod le SHA actuel de master (laisse le champ `sha` vide)
+#   - Rollback rapide : copier le SHA d'un build passé (cf. onglet Actions ou
+#     GHCR > Packages > davidmaarek-fr > Versions) et le coller dans `sha`.
+#
+# Important : ce workflow ne build PAS d'image. Il consomme une image déjà
+# poussée sur GHCR par le workflow `Build & Deploy Preprod`. Donc avant de
+# déployer un SHA en prod, vérifier que le tag `sha-XXX` existe bien sur GHCR.
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: "SHA court à déployer (7 chars, ex: abc1234). Laisse vide pour déployer le SHA actuel de master."
+        required: false
+        type: string
+
+env:
+  IMAGE_NAME: ghcr.io/davidmaarek/davidmaarek-fr
+  SERVICE_NAME: vps_davidmaarek-fr
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine target SHA
+        id: target
+        # Si l'utilisateur a fourni un SHA dans l'input, on l'utilise.
+        # Sinon on prend le SHA actuel de master (= comportement par défaut).
+        run: |
+          if [ -n "${{ inputs.sha }}" ]; then
+            echo "sha=${{ inputs.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: githubactions
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            set -e
+            docker service update \
+              --image ${{ env.IMAGE_NAME }}:sha-${{ steps.target.outputs.sha }} \
+              --with-registry-auth \
+              ${{ env.SERVICE_NAME }}
