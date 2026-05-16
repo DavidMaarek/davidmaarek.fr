@@ -1,6 +1,12 @@
-# Fichiers et dossiers à exclure du COPY dans l'image Docker.
-# Ces fichiers existent dans le repo mais n'ont rien à faire dans le conteneur
-# qui sert le site.
+# Fichiers exclus du build context envoyé au démon Docker.
+# Ça accélère le build (pas besoin d'envoyer .git, etc.) et c'est une bonne
+# pratique côté sécurité (.git contient potentiellement des credentials
+# qu'on ne veut pas embarquer dans l'image).
+#
+# Note : on N'EXCLUT PAS `nginx.conf` ni `Dockerfile` ici — ils sont nécessaires
+# au build (le Dockerfile fait `COPY nginx.conf ...`). Pour éviter qu'ils
+# finissent dans le webroot, le Dockerfile copie chaque dossier du site
+# explicitement plutôt que de faire un `COPY . /usr/share/nginx/html`.
 
 .git
 .gitignore
@@ -8,6 +14,3 @@
 .idea
 .DS_Store
 README.md
-Dockerfile
-.dockerignore
-nginx.conf

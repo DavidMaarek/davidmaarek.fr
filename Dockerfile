@@ -13,9 +13,20 @@ FROM nginx:1.27-alpine
 # en mode "listing de fichier" sans nos règles 404/cache) par la nôtre.
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copie l'index + tous les assets statiques (css/, fonts/, img/, tools/).
-# Le .dockerignore exclut .git, .github, .idea, README.md du COPY ci-dessous
-# pour ne pas polluer l'image runtime.
-COPY . /usr/share/nginx/html
+# Copie le contenu du site dans /usr/share/nginx/html.
+#
+# Liste explicite plutôt qu'un `COPY . /usr/share/nginx/html` : sinon les
+# fichiers d'infra (Dockerfile, nginx.conf, .gitignore, .github, etc.) se
+# retrouveraient dans le webroot et seraient potentiellement servis publiquement
+# à des URLs comme `/Dockerfile`. Ici on copie uniquement ce qui doit être
+# accessible publiquement.
+#
+# Si un nouveau dossier top-level est ajouté au repo (genre `articles/`), il
+# faudra ajouter une ligne COPY ici pour qu'il soit servi.
+COPY index.html /usr/share/nginx/html/
+COPY css       /usr/share/nginx/html/css
+COPY fonts     /usr/share/nginx/html/fonts
+COPY img       /usr/share/nginx/html/img
+COPY tools     /usr/share/nginx/html/tools
 
 EXPOSE 80
